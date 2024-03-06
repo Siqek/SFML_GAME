@@ -146,6 +146,7 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="GuiTextureSelector.cpp" />
     <ClCompile Include="HitboxComponent.cpp" />
     <ClCompile Include="KeyboardEvents.cpp" />
     <ClCompile Include="main.cpp" />

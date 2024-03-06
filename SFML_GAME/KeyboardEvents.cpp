@@ -8,20 +8,19 @@ KeyboardEvents::KeyboardEvents(std::map<std::string, int>* keys)
 
 
 //Accessors
-const bool KeyboardEvents::isPressed(std::string key) const
+const bool KeyboardEvents::isKeyPressed(std::string key) const
 {
-	if (this->keysStatus.at(key) == KEY_PRESSED)
-		return true;
-	
-	return false;
+	return (this->keysStatus.at(key) == KEY_PRESSED || this->isKeyUp(key) || this->isKeyDown(key));
 }
 
-const bool KeyboardEvents::isWaspressed(std::string key) const
+const bool KeyboardEvents::isKeyUp(std::string key) const
 {
-	if (this->keysStatus.at(key) == KEY_WASPRESSED)
-		return true;
+	return (this->keysStatus.at(key) == KEY_UP);
+}
 
-	return false;
+const bool KeyboardEvents::isKeyDown(std::string key) const
+{
+	return (this->keysStatus.at(key) == KEY_DOWN);
 }
 
 //Functions
@@ -29,14 +28,17 @@ void KeyboardEvents::updateKeysStatus()
 {
 	for (auto it = this->keys->begin(); it != this->keys->end(); ++it)
 	{
-		if (this->keysStatus[it->first] == KEY_PRESSED)
-			this->keysStatus[it->first] = KEY_WASPRESSED;
+		if (this->keysStatus[it->first] == KEY_PRESSED || this->keysStatus[it->first] == KEY_DOWN)
+			this->keysStatus[it->first] = KEY_UP;
 		else
 			this->keysStatus[it->first] = KEY_IDLE;
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(it->second)))
 		{
-			this->keysStatus[it->first] = KEY_PRESSED;
+			if (this->keysStatus[it->first] == KEY_IDLE)
+				this->keysStatus[it->first] = KEY_DOWN;
+			else
+				this->keysStatus[it->first] = KEY_PRESSED;
 		}
 	}
 }

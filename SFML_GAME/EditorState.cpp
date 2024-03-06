@@ -20,6 +20,14 @@ void EditorState::initializeFonts()
 	}
 }
 
+void EditorState::initializeText()
+{
+	this->cursonText.setFont(this->font);
+	this->cursonText.setFillColor(sf::Color::White);
+	this->cursonText.setCharacterSize(14);
+	this->cursonText.setPosition(this->mousePosView.x, this->mousePosView.y);
+}
+
 void EditorState::initializeKeybinds()
 {
 	std::ifstream ifs("config/editorstate_keybinds.ini");
@@ -55,19 +63,24 @@ void EditorState::initializeButtons()
 
 }
 
+void EditorState::initializeTileMap()
+{
+	this->tileMap = new TileMap(this->stateData->gridSize, 12, 12);
+}
+
 void EditorState::initializeGui()
 {
 	this->selectorRect.setSize(sf::Vector2f(this->stateData->gridSize, this->stateData->gridSize));
 	this->selectorRect.setPosition(0.f, 0.f);
 
-	this->selectorRect.setFillColor(sf::Color::Transparent);
+	this->selectorRect.setFillColor(sf::Color(255, 255, 255, 180));
 	this->selectorRect.setOutlineThickness(1.f);
 	this->selectorRect.setOutlineColor(sf::Color::Red);
-}
 
-void EditorState::initializeTileMap()
-{
-	this->tileMap = new TileMap(this->stateData->gridSize, 12, 12);
+	this->selectorRect.setTexture(this->tileMap->getTileSheet());
+	this->selectorRect.setTextureRect(this->textureRect);
+
+	this->textureSelector = new gui::TextureSelector(10.f, 10.f, 400.f, 400.f, this->tileMap->getTileSheet());
 }
 
 
@@ -77,12 +90,13 @@ EditorState::EditorState(StateData* state_data)
 	this->initializeVariables();
 	this->initializeBackground();
 	this->initializeFonts();
+	this->initializeText();
 	this->initializeKeybinds();
 	this->initializePauseMenu();
 	this->initializeKeyboardEvents();
 	this->initializeButtons();
-	this->initializeGui();
 	this->initializeTileMap();
+	this->initializeGui();
 }
 
 EditorState::~EditorState()
@@ -99,6 +113,8 @@ EditorState::~EditorState()
 	delete this->pmenu;
 
 	delete this->tileMap;
+
+	delete this->textureSelector;
 }
 
 
@@ -109,7 +125,7 @@ void EditorState::updateInput(const float& dt)
 	{
 		this->pauseState();
 	}
-	else if (this->keyboardEvents->isWaspressed("CLOSE"))
+	else if (this->keyboardEvents->isKeyDown("CLOSE"))
 	{
 		if (!this->paused)
 			this->pauseState();
@@ -132,7 +148,7 @@ void EditorState::updateEditorInput()
 	}
 
 	//Change texture
-	if (this->keyboardEvents->isWaspressed("CHANGE_TEXTURE"))
+	if (this->keyboardEvents->isKeyUp("CHANGE_TEXTURE"))
 	{
 		if (this->textureRect.left < 64)
 			this->textureRect.left += 64;
@@ -140,7 +156,7 @@ void EditorState::updateEditorInput()
 			this->textureRect.left -= 64;
 	}
 
-	if (this->keyboardEvents->isWaspressed("CHANGE_TEXTURE_2"))
+	if (this->keyboardEvents->isKeyUp("CHANGE_TEXTURE_2"))
 	{
 		if (this->textureRect.top < 64)
 			this->textureRect.top += 64;
@@ -160,7 +176,17 @@ void EditorState::updateButtons()
 
 void EditorState::updateGui()
 {
+	this->selectorRect.setTextureRect(this->textureRect);
 	this->selectorRect.setPosition(this->mousePosGrid.x * this->stateData->gridSize, this->mousePosGrid.y * this->stateData->gridSize);
+
+
+	//Update cursorText content and position
+	std::stringstream ss;
+	ss << this->mousePosView.x << " " << this->mousePosView.y << std::endl <<
+		this->mousePosGrid.x << " " << this->mousePosGrid.y << std::endl <<
+		this->textureRect.left << " " << this->textureRect.top;
+	this->cursonText.setString(ss.str());
+	this->cursonText.setPosition(this->mousePosView.x + 64.f, this->mousePosView.y);
 }
 
 void EditorState::updatePauseMenuButtons()
@@ -199,6 +225,8 @@ void EditorState::renderButtons(sf::RenderTarget& target)
 void EditorState::renderGui(sf::RenderTarget& target)
 {
 	target.draw(this->selectorRect);
+	this->textureSelector->render(target);
+	target.draw(this->cursonText);
 }
 
 void EditorState::render(sf::RenderTarget* target)
@@ -206,25 +234,13 @@ void EditorState::render(sf::RenderTarget* target)
 	if (!target)
 		target = this->window;
 
+	this->tileMap->render(*target);
+
 	this->renderButtons(*target);
 	this->renderGui(*target);
-
-	this->tileMap->render(*target);
 
 	if (this->paused) //Pause menu render
 	{
 		this->pmenu->render(*target);
 	}
-
-
-	//DELETE THIS!!!!
-	//to finding where you want set buttons, only debug
-	sf::Text mouseText;
-	mouseText.setPosition(this->mousePosView.x + 20, this->mousePosView.y);
-	mouseText.setFont(this->font);
-	mouseText.setCharacterSize(14);
-	std::stringstream ss;
-	ss << this->mousePosView.x << " " << this->mousePosView.y << std::endl << this->textureRect.left << " " << this->textureRect.top;
-	mouseText.setString(ss.str());
-	target->draw(mouseText);
 }

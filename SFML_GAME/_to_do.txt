@@ -1,8 +1,0 @@
-dodać klasę KeyboardEvents
-dać obsługę onKeyUp
-keys updatowane na podstawie mapy z keysami
-constructor z wszystkimi przyciskami potrzebnymi w klasie
-(w celu optymalizacji wybrane keysy a nie wszystkie)
-update statusu keysów
-accessory do mapy z statusami keysów
-initializeKeyboarEvents w GameState

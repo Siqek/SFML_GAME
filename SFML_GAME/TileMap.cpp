@@ -23,7 +23,7 @@ TileMap::TileMap(float gridSize, unsigned width, unsigned height)
 		}
 	}
 
-	if (!this->tileTextureSheet.loadFromFile("Resources\\Images\\Tiles\\tilesheet.png"))
+	if (!this->tileSheet.loadFromFile("Resources\\Images\\Tiles\\tilesheet.png"))
 		std::cout << "ERROR::TILEMAP::FAILED TO LOAD TILETEXTURESHEET" << std::endl;
 }
 
@@ -44,6 +44,12 @@ TileMap::~TileMap()
 }
 
 
+//Accessors
+const sf::Texture* TileMap::getTileSheet() const
+{
+	return &this->tileSheet;
+}
+
 //Functions
 void TileMap::addTile(const unsigned x, const unsigned y, const unsigned z, const sf::IntRect& texture_sheet)
 {
@@ -53,7 +59,7 @@ void TileMap::addTile(const unsigned x, const unsigned y, const unsigned z, cons
 	{
 		if (this->map[x][y][z] == nullptr)
 		{
-			this->map[x][y][z] = new Tile(x * this->gridSizeF, y * this->gridSizeF, this->gridSizeF, this->tileTextureSheet, texture_sheet);
+			this->map[x][y][z] = new Tile(x * this->gridSizeF, y * this->gridSizeF, this->gridSizeF, this->tileSheet, texture_sheet);
 			std::cout << "DEBUG: ADDED NEW TILE" << std::endl;
 		}
 	}

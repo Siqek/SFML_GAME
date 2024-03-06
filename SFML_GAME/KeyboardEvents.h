@@ -5,7 +5,8 @@ enum keys_status
 {
 	KEY_IDLE = 0,
 	KEY_PRESSED,
-	KEY_WASPRESSED
+	KEY_UP,
+	KEY_DOWN
 };
 
 class KeyboardEvents
@@ -19,8 +20,9 @@ public:
 	KeyboardEvents(std::map<std::string, int>* keys);
 
 	//Accessors
-	const bool isPressed(std::string key) const;
-	const bool isWaspressed(std::string key) const;
+	const bool isKeyPressed(std::string key) const;
+	const bool isKeyUp(std::string key) const;
+	const bool isKeyDown(std::string key) const;
 
 	//Functions
 	void updateKeysStatus();

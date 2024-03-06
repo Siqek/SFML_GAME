@@ -98,7 +98,7 @@ void GameState::updateInput(const float& dt)
 	{
 		this->pauseState();
 	}
-	else if (this->keyboardEvents->isWaspressed("CLOSE"))
+	else if (this->keyboardEvents->isKeyDown("CLOSE"))
 	{
 		if (!this->paused)
 			this->pauseState();

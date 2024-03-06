@@ -19,6 +19,7 @@ class EditorState :
 private:
     //Variables
     sf::Font font;
+    sf::Text cursonText;
     PauseMenu* pmenu;
     KeyboardEvents* keyboardEvents;
 
@@ -29,16 +30,19 @@ private:
     sf::IntRect textureRect;
     sf::RectangleShape selectorRect;
 
+    gui::TextureSelector* textureSelector;
+
     //Functions
     void initializeVariables();
     void initializeBackground();
     void initializeFonts();
+    void initializeText();
     void initializeKeybinds();
     void initializePauseMenu();
     void initializeKeyboardEvents();
     void initializeButtons();
-    void initializeGui();
     void initializeTileMap();
+    void initializeGui();
 
 public:
     EditorState(StateData* state_data);
