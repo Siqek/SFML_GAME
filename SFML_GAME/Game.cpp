@@ -113,7 +113,7 @@ void Game::updateSFMLEvents()
     while (this->window->pollEvent(this->sfEvent))
     {
         if (this->sfEvent.type == sf::Event::Closed) //sprawdzenie czy user chce zamkn¹æ okno
-            this->window->close(); //zamkniêcie okna    
+            this->window->close(); //zamkniêcie okna  
     }
 }
 

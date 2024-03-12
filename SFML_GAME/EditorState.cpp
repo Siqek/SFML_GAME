@@ -80,7 +80,7 @@ void EditorState::initializeGui()
 	this->selectorRect.setTexture(this->tileMap->getTileSheet());
 	this->selectorRect.setTextureRect(this->textureRect);
 
-	this->textureSelector = new gui::TextureSelector(10.f, 10.f, 400.f, 400.f, this->tileMap->getTileSheet());
+	this->textureSelector = new gui::TextureSelector(10.f, 10.f, 400.f, 400.f, this->stateData->gridSize, this->tileMap->getTileSheet());
 }
 
 
@@ -139,29 +139,20 @@ void EditorState::updateEditorInput()
 	//Add a tile
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-		this->tileMap->addTile(this->mousePosGrid.x, this->mousePosGrid.y, 0, this->textureRect);
+		if (!this->textureSelector->getActive())
+		{
+			this->tileMap->addTile(this->mousePosGrid.x, this->mousePosGrid.y, 0, this->textureRect);
+		}
+		else
+		{
+			this->textureRect = this->textureSelector->getTextureRect();
+		}
 	}
 	//Remove a tile
 	else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
 	{
-		this->tileMap->removeTile(this->mousePosGrid.x, this->mousePosGrid.y, 0);
-	}
-
-	//Change texture
-	if (this->keyboardEvents->isKeyUp("CHANGE_TEXTURE"))
-	{
-		if (this->textureRect.left < 64)
-			this->textureRect.left += 64;
-		else
-			this->textureRect.left -= 64;
-	}
-
-	if (this->keyboardEvents->isKeyUp("CHANGE_TEXTURE_2"))
-	{
-		if (this->textureRect.top < 64)
-			this->textureRect.top += 64;
-		else
-			this->textureRect.top -= 64;
+		if (!this->textureSelector->getActive())
+			this->tileMap->removeTile(this->mousePosGrid.x, this->mousePosGrid.y, 0);
 	}
 }
 
@@ -176,9 +167,13 @@ void EditorState::updateButtons()
 
 void EditorState::updateGui()
 {
-	this->selectorRect.setTextureRect(this->textureRect);
-	this->selectorRect.setPosition(this->mousePosGrid.x * this->stateData->gridSize, this->mousePosGrid.y * this->stateData->gridSize);
+	this->textureSelector->update(this->mousePosWindow);
 
+	if (!this->textureSelector->getActive())
+	{
+		this->selectorRect.setTextureRect(this->textureRect);
+		this->selectorRect.setPosition(this->mousePosGrid.x * this->stateData->gridSize, this->mousePosGrid.y * this->stateData->gridSize);
+	}
 
 	//Update cursorText content and position
 	std::stringstream ss;
@@ -224,8 +219,11 @@ void EditorState::renderButtons(sf::RenderTarget& target)
 
 void EditorState::renderGui(sf::RenderTarget& target)
 {
-	target.draw(this->selectorRect);
+	if (!this->textureSelector->getActive())
+		target.draw(this->selectorRect);
+
 	this->textureSelector->render(target);
+
 	target.draw(this->cursonText);
 }
 
