@@ -1,6 +1,10 @@
 #ifndef GUI_H
 #define GUI_H
 
+class Button;
+class DropDownList;
+class TextureSelector;
+
 enum button_states
 {
 	BTN_IDLE = 0,
@@ -91,6 +95,8 @@ namespace gui
 		//Variables
 		float gridSize;
 		bool active;
+		bool hidden;
+		gui::Button* hide_btn;
 		sf::RectangleShape bounds;
 		sf::Sprite sheet;
 		sf::RectangleShape selector;
@@ -98,7 +104,9 @@ namespace gui
 		sf::IntRect textureRect;
 
 	public:
-		TextureSelector(float x, float y, float height, float width, float gridSize, const sf::Texture* texture_sheet);
+		TextureSelector(float x, float y, 
+			float height, float width, float gridSize,
+			const sf::Texture* texture_sheet, sf::Font& font, std::string text);
 		~TextureSelector();
 
 		//Accessors
