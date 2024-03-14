@@ -27,6 +27,8 @@ private:
 
     TileMap* tileMap;
 
+    sf::RectangleShape sidebar;
+
     sf::IntRect textureRect;
     sf::RectangleShape selectorRect;
 

@@ -70,6 +70,11 @@ void EditorState::initializeTileMap()
 
 void EditorState::initializeGui()
 {
+	this->sidebar.setSize(sf::Vector2f(100.f, static_cast<float>(this->stateData->gfxSettings->resolution.height)));
+	this->sidebar.setFillColor(sf::Color(100, 100, 100, 40));
+	this->sidebar.setOutlineThickness(1.f);
+	this->sidebar.setOutlineColor(sf::Color(200, 200, 200, 40));
+
 	this->selectorRect.setSize(sf::Vector2f(this->stateData->gridSize, this->stateData->gridSize));
 	this->selectorRect.setPosition(0.f, 0.f);
 
@@ -80,9 +85,9 @@ void EditorState::initializeGui()
 	this->selectorRect.setTexture(this->tileMap->getTileSheet());
 	this->selectorRect.setTextureRect(this->textureRect);
 
-	this->textureSelector = new gui::TextureSelector(10.f, 10.f, 400.f, 400.f, 
+	this->textureSelector = new gui::TextureSelector(30.f, 10.f, 400.f, 400.f, 
 		this->stateData->gridSize, this->tileMap->getTileSheet(),
-		this->font, "X");
+		this->font, "HIDE");
 }
 
 
@@ -141,20 +146,26 @@ void EditorState::updateEditorInput()
 	//Add a tile
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-		if (!this->textureSelector->getActive())
+		if (!this->sidebar.getGlobalBounds().contains(this->mousePosView))
 		{
-			this->tileMap->addTile(this->mousePosGrid.x, this->mousePosGrid.y, 0, this->textureRect);
-		}
-		else
-		{
-			this->textureRect = this->textureSelector->getTextureRect();
+			if (!this->textureSelector->getActive())
+			{
+				this->tileMap->addTile(this->mousePosGrid.x, this->mousePosGrid.y, 0, this->textureRect);
+			}
+			else
+			{
+				this->textureRect = this->textureSelector->getTextureRect();
+			}
 		}
 	}
 	//Remove a tile
 	else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
 	{
-		if (!this->textureSelector->getActive())
-			this->tileMap->removeTile(this->mousePosGrid.x, this->mousePosGrid.y, 0);
+		if (!this->sidebar.getGlobalBounds().contains(this->mousePosView))
+		{
+			if (!this->textureSelector->getActive())
+				this->tileMap->removeTile(this->mousePosGrid.x, this->mousePosGrid.y, 0);
+		}
 	}
 }
 
@@ -221,6 +232,8 @@ void EditorState::renderButtons(sf::RenderTarget& target)
 
 void EditorState::renderGui(sf::RenderTarget& target)
 {
+	target.draw(this->sidebar);
+
 	if (!this->textureSelector->getActive())
 		target.draw(this->selectorRect);
 

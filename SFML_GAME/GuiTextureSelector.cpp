@@ -9,7 +9,7 @@ gui::TextureSelector::TextureSelector(float x, float y,
 	this->active = false;
 	this->hidden = false;
 
-	float offset = 50.f;
+	float offset = 80.f;
 
 	this->bounds.setSize(sf::Vector2f(width, height));
 	this->bounds.setPosition(x + offset, y);
