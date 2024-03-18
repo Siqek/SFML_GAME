@@ -102,8 +102,8 @@ void TileMap::saveToFile(const std::string file_name)
 			{
 				for (size_t z = 0; z < this->layers; z++)
 				{
-					outp_file << x << " " << y << " " << z << 0 << "\n";
-					//outp_file << this->map[x][y][z];
+					if (this->map[x][y][z])
+						outp_file << x << " " << y << " " << z << " " << this->map[x][y][z]->getAsString() << "\n";
 				}
 			}
 		}
