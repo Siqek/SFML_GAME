@@ -41,7 +41,7 @@ gui::TextureSelector::TextureSelector(float x, float y,
 	this->hide_btn = new gui::Button(
 		x, y, 50.f, 50.f,
 		&font, text, 20,
-		sf::Color(100, 100, 100, 255), sf::Color(220, 220, 220, 255), sf::Color(50, 50, 50, 255),
+		sf::Color(255, 255, 255, 255), sf::Color(255, 255, 255, 255), sf::Color(255, 255, 255, 255),
 		sf::Color(0, 0, 0, 0), sf::Color(0, 0, 0, 0), sf::Color(0, 0, 0, 0));
 }
 

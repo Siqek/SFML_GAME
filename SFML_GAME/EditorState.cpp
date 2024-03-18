@@ -51,6 +51,7 @@ void EditorState::initializePauseMenu()
 	this->pmenu = new PauseMenu(*this->window, this->font);
 
 	this->pmenu->addButton("QUIT", 820.f, "Quit");
+	this->pmenu->addButton("SAVE", 620.f, "Save");
 }
 
 void EditorState::initializeKeyboardEvents()
@@ -65,7 +66,7 @@ void EditorState::initializeButtons()
 
 void EditorState::initializeTileMap()
 {
-	this->tileMap = new TileMap(this->stateData->gridSize, 12, 12);
+	this->tileMap = new TileMap(this->stateData->gridSize, 12, 12, "Resources\\Images\\Tiles\\tilesheet.png");
 }
 
 void EditorState::initializeGui()
@@ -171,7 +172,7 @@ void EditorState::updateEditorInput()
 
 void EditorState::updateButtons()
 {
-	/*Update all the buttons in the state and handle their functionality*/
+	/* Update all the buttons in the state */
 	for (auto& i : this->buttons)
 	{
 		i.second->update(this->mousePosView);
@@ -201,6 +202,9 @@ void EditorState::updatePauseMenuButtons()
 {
 	if (this->pmenu->isButtonClicked("QUIT"))
 		this->endState();
+
+	if (this->pmenu->isButtonClicked("SAVE"))
+		this->tileMap->saveToFile("tileMapTest.tlmp.txt");
 }
 
 void EditorState::update(const float& dt)

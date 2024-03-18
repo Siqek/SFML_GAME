@@ -40,10 +40,10 @@ namespace gui
 
 	public:
 		Button(float x, float y, float width, float height,
-			sf::Font* font, std::string text, unsigned chatacker_size,
-			sf::Color text_idle_color, sf::Color text_hover_color, sf::Color text_active_color,
-			sf::Color idle_color, sf::Color hover_color, sf::Color active_color,
-			sf::Color outline_idle_color = sf::Color::Transparent, sf::Color outline_hover_color = sf::Color::Transparent, sf::Color outline_active_color = sf::Color::Transparent,
+			sf::Font* font, std::string text, unsigned charackter_size = 11,
+			sf::Color text_idle_color = sf::Color{ 0xFFFFFFFF }, sf::Color text_hover_color = sf::Color{ 0xFFFFFFFF }, sf::Color text_active_color = sf::Color{ 0xFFFFFFFF },
+			sf::Color idle_color = sf::Color{ 0x000000FF }, sf::Color hover_color = sf::Color{ 0x000000FF }, sf::Color active_color = sf::Color{ 0x000000FF },
+			sf::Color outline_idle_color = sf::Color{ 0x00000000 }, sf::Color outline_hover_color = sf::Color{ 0x00000000 }, sf::Color outline_active_color = sf::Color{ 0x00000000 },
 			short unsigned id = 0);
 		virtual ~Button();
 

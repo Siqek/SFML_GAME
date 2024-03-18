@@ -66,7 +66,7 @@ void GameState::initializePlayers()
 
 void GameState::initializeTileMap()
 {
-	this->tileMap = new TileMap(this->stateData->gridSize, 12, 12);
+	this->tileMap = new TileMap(this->stateData->gridSize, 12, 12, "Resources\\Images\\Tiles\\tilesheet.png");
 }
 
 
