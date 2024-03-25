@@ -52,6 +52,7 @@ void EditorState::initializePauseMenu()
 
 	this->pmenu->addButton("QUIT", 820.f, "Quit");
 	this->pmenu->addButton("SAVE", 620.f, "Save");
+	this->pmenu->addButton("LOAD", 520.f, "Load");
 }
 
 void EditorState::initializeKeyboardEvents()
@@ -204,7 +205,10 @@ void EditorState::updatePauseMenuButtons()
 		this->endState();
 
 	if (this->pmenu->isButtonClicked("SAVE"))
-		this->tileMap->saveToFile("tileMapTest.tlmp.txt");
+		this->tileMap->saveToFile("tileMap.txt");
+
+	if (this->pmenu->isButtonClicked("LOAD"))
+		this->tileMap->loadFromFile("tileMap.txt");
 }
 
 void EditorState::update(const float& dt)

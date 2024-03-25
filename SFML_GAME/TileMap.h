@@ -6,6 +6,7 @@
 class TileMap
 {
 private:
+	//Variables
 	float gridSizeF;
 	unsigned gridSizeU;
 	sf::Vector2u maxSize;
@@ -13,6 +14,9 @@ private:
 	std::vector<std::vector<std::vector<Tile*>>> map;
 	std::string textureFile;
 	sf::Texture tileSheet;
+
+	//Functions
+	void clear();
 
 public:
 	TileMap(float gridSize, unsigned width, unsigned height, std::string texture_file);
