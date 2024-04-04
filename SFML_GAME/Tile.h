@@ -4,7 +4,8 @@
 enum TileTypes
 {
 	DEAFULT = 0,
-	DAMAGING
+	DAMAGING,
+	TILETYPES_NUM
 };
 
 class Tile

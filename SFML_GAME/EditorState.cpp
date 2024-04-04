@@ -5,6 +5,8 @@
 void EditorState::initializeVariables()
 {
 	this->textureRect = sf::IntRect(0, 0, static_cast<int>(this->stateData->gridSize), static_cast<int>(this->stateData->gridSize));
+	this->collision = false;
+	this->type = TileTypes::DEAFULT;
 }
 
 void EditorState::initializeBackground()
@@ -152,7 +154,7 @@ void EditorState::updateEditorInput()
 		{
 			if (!this->textureSelector->getActive())
 			{
-				this->tileMap->addTile(this->mousePosGrid.x, this->mousePosGrid.y, 0, this->textureRect);
+				this->tileMap->addTile(this->mousePosGrid.x, this->mousePosGrid.y, 0, this->textureRect, this->collision, this->type);
 			}
 			else
 			{
@@ -168,6 +170,25 @@ void EditorState::updateEditorInput()
 			if (!this->textureSelector->getActive())
 				this->tileMap->removeTile(this->mousePosGrid.x, this->mousePosGrid.y, 0);
 		}
+	}
+
+	//Toggle collision
+	if (this->keyboardEvents->isKeyUp("TOGGLE_COLLISION"))
+	{
+		/* true -> false -> true */
+		this->collision = !this->collision;
+	}
+
+	//Change type
+	if (this->keyboardEvents->isKeyUp("INCREASE_TYPE"))
+	{
+		if (this->type < TileTypes::TILETYPES_NUM - 1)
+			++this->type;
+	}
+	else if (this->keyboardEvents->isKeyUp("DECREASE_TYPE"))
+	{
+		if (this->type > TileTypes::DEAFULT)
+			--this->type;
 	}
 }
 
@@ -192,9 +213,11 @@ void EditorState::updateGui()
 
 	//Update cursorText content and position
 	std::stringstream ss;
-	ss << this->mousePosView.x << " " << this->mousePosView.y << std::endl <<
-		this->mousePosGrid.x << " " << this->mousePosGrid.y << std::endl <<
-		this->textureRect.left << " " << this->textureRect.top;
+	ss << this->mousePosView.x << " " << this->mousePosView.y << std::endl 
+		<< this->mousePosGrid.x << " " << this->mousePosGrid.y << std::endl 
+		<< this->textureRect.left << " " << this->textureRect.top << std::endl
+		<< "Collision: " << this->collision << std::endl
+		<< "Type: " << this->type;
 	this->cursonText.setString(ss.str());
 	this->cursonText.setPosition(this->mousePosView.x + 64.f, this->mousePosView.y);
 }

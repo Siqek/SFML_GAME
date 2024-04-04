@@ -61,7 +61,9 @@ const sf::Texture* TileMap::getTileSheet() const
 }
 
 //Functions
-void TileMap::addTile(const unsigned x, const unsigned y, const unsigned z, const sf::IntRect& texture_sheet)
+void TileMap::addTile(const unsigned x, const unsigned y, const unsigned z,
+	const sf::IntRect& texture_sheet,
+	const bool& collision, const short& type)
 {
 	if (x < this->maxSize.x && x >= 0 &&
 		y < this->maxSize.y && y >= 0 &&
@@ -69,7 +71,7 @@ void TileMap::addTile(const unsigned x, const unsigned y, const unsigned z, cons
 	{
 		if (this->map[x][y][z] == nullptr)
 		{
-			this->map[x][y][z] = new Tile(x, y, this->gridSizeF, this->tileSheet, texture_sheet);
+			this->map[x][y][z] = new Tile(x, y, this->gridSizeF, this->tileSheet, texture_sheet, collision, type);
 			std::cout << "DEBUG: ADDED NEW TILE" << std::endl;
 		}
 	}
@@ -156,6 +158,8 @@ void TileMap::loadFromFile(const std::string file_name)
 		this->maxSize.y = size.y;
 		this->layers = layers;
 		this->textureFile = texture_file;
+
+		this->clear();
 
 		this->map.resize(this->maxSize.x, std::vector<std::vector<Tile*>>());
 		for (size_t x = 0; x < this->maxSize.x; x++)
